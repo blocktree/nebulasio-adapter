@@ -142,10 +142,10 @@ func TestTransfer_NAS(t *testing.T) {
 		return
 	}
 
-	//_, err = testSubmitTransactionStep(tm, rawTx)
-	//if err != nil {
-	//	return
-	//}
+	_, err = testSubmitTransactionStep(tm, rawTx)
+	if err != nil {
+		return
+	}
 
 }
 
@@ -154,7 +154,7 @@ func TestSummary_NAS(t *testing.T) {
 	tm := testInitWalletManager()
 	walletID := "WBtXf2yzciMxz4FUxade4Q5wEwHK8nGwjP"
 	accountID := "76v8GAeRCoWZHEVUEkNJXkL3N7T3nY7i7CAAc3mUGFrj"
-	summaryAddress := "0xd35f9Ea14D063af9B3567064FAB567275b09f03D"
+	summaryAddress := "n1JeQaKX9sh8V8H4GGwHzQroFkdhyr1ux6H"
 
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
