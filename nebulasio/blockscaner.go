@@ -1034,8 +1034,15 @@ func (bs *NASBlockScanner) GetScannedBlockHeight() uint64 {
 }
 
 //ExtractTransactionData 扫描一笔交易
-func (bs *NASBlockScanner) ExtractTransactionData(txid string, scanAddressFunc openwallet.BlockScanAddressFunc) (map[string][]*openwallet.TxExtractData, error) {
+func (bs *NASBlockScanner) ExtractTransactionData(txid string, scanTargetFunc openwallet.BlockScanTargetFunc) (map[string][]*openwallet.TxExtractData, error) {
 
+	scanAddressFunc := func(address string) (string, bool){
+		target := openwallet.ScanTarget{
+			Address: address,
+			BalanceModelType: openwallet.BalanceModelTypeAddress,
+		}
+		return scanTargetFunc(target)
+	}
 	result := bs.ExtractTransaction(0, "", txid, scanAddressFunc)
 	if !result.Success {
 		return nil, fmt.Errorf("extract transaction failed")
