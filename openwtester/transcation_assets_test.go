@@ -63,10 +63,10 @@ func testCreateSummaryTransactionStep(
 	tm *openw.WalletManager,
 	walletID, accountID, summaryAddress, minTransfer, retainedBalance, feeRate string,
 	start, limit int,
-	contract *openwallet.SmartContract) ([]*openwallet.RawTransaction, error) {
+	contract *openwallet.SmartContract) ([]*openwallet.RawTransactionWithError, error) {
 
-	rawTxArray, err := tm.CreateSummaryTransaction(testApp, walletID, accountID, summaryAddress, minTransfer,
-		retainedBalance, feeRate, start, limit, contract)
+	rawTxArray, err := tm.CreateSummaryRawTransactionWithError(testApp, walletID, accountID, summaryAddress, minTransfer,
+		retainedBalance, feeRate, start, limit, contract, nil)
 
 	if err != nil {
 		log.Error("CreateSummaryTransaction failed, unexpected error:", err)
@@ -167,67 +167,28 @@ func TestSummary_NAS(t *testing.T) {
 	}
 
 	//执行汇总交易
-	for _, rawTx := range rawTxArray {
-		_, err = testSignTransactionStep(tm, rawTx)
+	for _, rawTxWithErr := range rawTxArray {
+
+		if rawTxWithErr.Error != nil {
+			log.Error(rawTxWithErr.Error.Error())
+			continue
+		}
+
+		_, err = testSignTransactionStep(tm, rawTxWithErr.RawTx)
 		if err != nil {
 			return
 		}
 
-		_, err = testVerifyTransactionStep(tm, rawTx)
+		_, err = testVerifyTransactionStep(tm, rawTxWithErr.RawTx)
 		if err != nil {
 			return
 		}
 
-		_, err = testSubmitTransactionStep(tm, rawTx)
-		if err != nil {
-			return
-		}
-	}
-
-}
-
-func TestSummary_ERC20(t *testing.T) {
-	tm := testInitWalletManager()
-	walletID := "WMTUzB3LWaSKNKEQw9Sn73FjkEoYGHEp4B"
-	accountID := "59t47qyjHUMZ6PGAdjkJopE9ffAPUkdUhSinJqcWRYZ1"
-	summaryAddress := "0xd35f9Ea14D063af9B3567064FAB567275b09f03D"
-
-	contract := openwallet.SmartContract{
-		Address:  "4092678e4E78230F46A1534C0fbc8fA39780892B",
-		Symbol:   "ETH",
-		Name:     "OCoin",
-		Token:    "OCN",
-		Decimals: 18,
-	}
-
-	testGetAssetsAccountBalance(tm, walletID, accountID)
-
-	testGetAssetsAccountTokenBalance(tm, walletID, accountID, contract)
-
-	rawTxArray, err := testCreateSummaryTransactionStep(tm, walletID, accountID,
-		summaryAddress, "", "", "",
-		0, 100, &contract)
-	if err != nil {
-		log.Errorf("CreateSummaryTransaction failed, unexpected error: %v", err)
-		return
-	}
-
-	//执行汇总交易
-	for _, rawTx := range rawTxArray {
-		_, err = testSignTransactionStep(tm, rawTx)
-		if err != nil {
-			return
-		}
-
-		_, err = testVerifyTransactionStep(tm, rawTx)
-		if err != nil {
-			return
-		}
-
-		_, err = testSubmitTransactionStep(tm, rawTx)
+		_, err = testSubmitTransactionStep(tm, rawTxWithErr.RawTx)
 		if err != nil {
 			return
 		}
 	}
 
 }
+
