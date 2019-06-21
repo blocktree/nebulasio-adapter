@@ -12,5 +12,7 @@ openwtester包下的测试用例已经集成了openwallet钱包体系，创建co
 apiUrl = "https://mainnet.nebulas.io"
 # gas limit, unit is NAS, 0.000000000002NAS default
 gasLimit = "0.000000000002"
+# Cache data file directory, default = "", current directory: ./data
+dataDir = ""
 
 ```

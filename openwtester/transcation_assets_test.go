@@ -121,11 +121,11 @@ func TestTransfer_NAS(t *testing.T) {
 	tm := testInitWalletManager()
 	walletID := "WBtXf2yzciMxz4FUxade4Q5wEwHK8nGwjP"
 	accountID := "76v8GAeRCoWZHEVUEkNJXkL3N7T3nY7i7CAAc3mUGFrj"
-	to := "n1JeQaKX9sh8V8H4GGwHzQroFkdhyr1ux6H"
+	to := "n1EcdDJUMPYN6vr7J8aCuDw3ajn5WeVMHv6"
 
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
-	rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "0.001", "", nil)
+	rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "0.01", "", nil)
 	if err != nil {
 		return
 	}
@@ -154,12 +154,12 @@ func TestSummary_NAS(t *testing.T) {
 	tm := testInitWalletManager()
 	walletID := "WBtXf2yzciMxz4FUxade4Q5wEwHK8nGwjP"
 	accountID := "76v8GAeRCoWZHEVUEkNJXkL3N7T3nY7i7CAAc3mUGFrj"
-	summaryAddress := "n1JeQaKX9sh8V8H4GGwHzQroFkdhyr1ux6H"
+	summaryAddress := "n1EcdDJUMPYN6vr7J8aCuDw3ajn5WeVMHv6"
 
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	rawTxArray, err := testCreateSummaryTransactionStep(tm, walletID, accountID,
-		summaryAddress, "", "", "",
+		summaryAddress, "0.1", "0.1", "",
 		0, 100, nil)
 	if err != nil {
 		log.Errorf("CreateSummaryTransaction failed, unexpected error: %v", err)

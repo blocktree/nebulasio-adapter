@@ -83,6 +83,8 @@ type WalletConfig struct {
 	/***********扫描器**************/
 	//区块链数据文件
 	BlockchainFile string
+	//数据目录
+	DataDir string
 }
 
 func NewConfig(symbol string, masterKey string) *WalletConfig {
@@ -143,9 +145,9 @@ cycleSeconds = ""
 `
 
 	//创建目录
-	file.MkdirAll(c.dbPath)
-	file.MkdirAll(c.backupDir)
-	file.MkdirAll(c.keyDir)
+	//file.MkdirAll(c.dbPath)
+	//file.MkdirAll(c.backupDir)
+	//file.MkdirAll(c.keyDir)
 
 	return &c
 }
@@ -192,6 +194,24 @@ func (wm *WalletManager) LoadAssetsConfig(c config.Configer) error {
 	//wm.Config.CycleSeconds, _ = time.ParseDuration(cyclesec)
 
 	wm.WalletClient = NewClient(wm.Config.ServerAPI, false)
+	wm.Config.DataDir = c.String("dataDir")
 
+	//数据文件夹
+	wm.Config.makeDataDir()
 	return nil
+}
+
+//创建文件夹
+func (wc *WalletConfig) makeDataDir() {
+
+	if len(wc.DataDir) == 0 {
+		//默认路径当前文件夹./data
+		wc.DataDir = "data"
+	}
+
+	//本地数据库文件路径
+	wc.dbPath = filepath.Join(wc.DataDir, strings.ToLower(wc.Symbol), "db")
+
+	//创建目录
+	file.MkdirAll(wc.dbPath)
 }
