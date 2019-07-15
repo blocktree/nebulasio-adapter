@@ -113,7 +113,7 @@ func TestWalletManager_GetAssetsAccountBalance(t *testing.T) {
 		log.Error("GetAssetsAccountBalance failed, unexpected error:", err)
 		return
 	}
-	log.Info("balance:", balance)
+	log.Info("balance: %+v", balance)
 }
 
 func TestWalletManager_GetAssetsAccountTokenBalance(t *testing.T) {

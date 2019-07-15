@@ -23,8 +23,8 @@ import (
 	"time"
 
 	"github.com/asdine/storm"
-	"github.com/blocktree/openwallet/openwallet"
 	"github.com/blocktree/go-owcdrivers/addressEncoder"
+	"github.com/blocktree/openwallet/openwallet"
 	"github.com/shopspring/decimal"
 	"github.com/tidwall/gjson"
 )
@@ -612,6 +612,7 @@ func (bs *NASBlockScanner) InitNasExtractResult(tx *NasTransaction, result *Extr
 		Decimal:     18,
 		Amount:      amount,
 		ConfirmTime: int64(tx.BlockTime),
+		TxType:      0,
 	}
 
 	if tx.Status == 1 {
@@ -1003,7 +1004,6 @@ func (bs *NASBlockScanner) GetScannedBlockHeader() (*openwallet.BlockHeader, err
 	return &openwallet.BlockHeader{Height: blockHeight, Hash: hash}, nil
 }
 
-
 //GetCurrentBlockHeader 获取当前区块高度
 func (bs *NASBlockScanner) GetCurrentBlockHeader() (*openwallet.BlockHeader, error) {
 
@@ -1036,9 +1036,9 @@ func (bs *NASBlockScanner) GetScannedBlockHeight() uint64 {
 //ExtractTransactionData 扫描一笔交易
 func (bs *NASBlockScanner) ExtractTransactionData(txid string, scanTargetFunc openwallet.BlockScanTargetFunc) (map[string][]*openwallet.TxExtractData, error) {
 
-	scanAddressFunc := func(address string) (string, bool){
+	scanAddressFunc := func(address string) (string, bool) {
 		target := openwallet.ScanTarget{
-			Address: address,
+			Address:          address,
 			BalanceModelType: openwallet.BalanceModelTypeAddress,
 		}
 		return scanTargetFunc(target)

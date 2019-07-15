@@ -28,13 +28,13 @@ import (
 
 	"github.com/asdine/storm"
 	"github.com/astaxie/beego/config"
+	"github.com/blocktree/go-owcdrivers/addressEncoder"
+	"github.com/blocktree/go-owcrypt"
 	"github.com/blocktree/openwallet/common"
 	"github.com/blocktree/openwallet/common/file"
 	"github.com/blocktree/openwallet/hdkeystore"
 	"github.com/blocktree/openwallet/log"
 	"github.com/blocktree/openwallet/openwallet"
-	"github.com/blocktree/go-owcdrivers/addressEncoder"
-	"github.com/blocktree/go-owcrypt"
 	"github.com/bndr/gotabulate"
 	"github.com/btcsuite/btcutil/hdkeychain"
 	"github.com/gogo/protobuf/proto"
@@ -1296,8 +1296,10 @@ func (wm *WalletManager) BsGetBalanceByAddress(addr string) (*openwallet.Balance
 	balance := balance_decimal.Div(coinDecimal)
 
 	Balance := &openwallet.Balance{
-		Address: addr,
-		Balance: balance.String(),
+		Address:          addr,
+		Balance:          balance.String(),
+		ConfirmBalance:   balance.String(),
+		UnconfirmBalance: "0",
 	}
 
 	return Balance, nil

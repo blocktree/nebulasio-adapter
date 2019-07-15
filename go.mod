@@ -5,9 +5,9 @@ go 1.12
 require (
 	github.com/asdine/storm v2.1.2+incompatible
 	github.com/astaxie/beego v1.11.1
-	github.com/blocktree/go-owcdrivers v1.0.4
+	github.com/blocktree/go-owcdrivers v1.0.12
 	github.com/blocktree/go-owcrypt v1.0.1
-	github.com/blocktree/openwallet v1.4.3
+	github.com/blocktree/openwallet v1.4.6
 	github.com/bndr/gotabulate v1.1.2
 	github.com/btcsuite/btcutil v0.0.0-20190316010144-3ac1210f4b38
 	github.com/ethereum/go-ethereum v1.8.25
@@ -22,3 +22,5 @@ require (
 	google.golang.org/genproto v0.0.0-20190404172233-64821d5d2107 // indirect
 	google.golang.org/grpc v1.19.1 // indirect
 )
+
+//replace github.com/blocktree/openwallet => ../../openwallet
