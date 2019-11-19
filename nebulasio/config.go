@@ -82,7 +82,7 @@ type WalletConfig struct {
 	CurveType uint32
 	/***********扫描器**************/
 	//区块链数据文件
-	BlockchainFile string
+	//BlockchainFile string
 	//数据目录
 	DataDir string
 }
@@ -123,7 +123,7 @@ func NewConfig(symbol string, masterKey string) *WalletConfig {
 	//汇总执行间隔时间
 	c.CycleSeconds = time.Second * 10
 	//区块链数据文件
-	c.BlockchainFile = "blockchain.db"
+	//c.BlockchainFile = "blockchain.db"
 	//默认配置内容
 	c.DefaultConfig = `
 # start node command
