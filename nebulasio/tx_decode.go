@@ -599,6 +599,7 @@ func (decoder *TransactionDecoder) createRawTransaction(wrapper openwallet.Walle
 		Nonce:   strconv.FormatUint(nonce, 10),
 		Address: addr,
 		Message: hex.EncodeToString(TX.Hash[:]),
+		RSV:     true,
 	}
 	keySignList = append(keySignList, &signature)
 

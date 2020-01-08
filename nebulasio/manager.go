@@ -271,16 +271,22 @@ func (wm *WalletManager) CreateRawTransaction(from, to, gasLimit, gasPrice, valu
 func SignRawTransaction(PrivateKey []byte, txhash []byte) ([]byte, error) {
 
 	//调用ow库签名交易结果
-	signed, ret := owcrypt.NAS_signature(PrivateKey, txhash) //对交易体进行签名结果 //65字节
-	if ret != owcrypt.SUCCESS {
-		errdesc := fmt.Sprintln("signature error, ret:", "0x"+strconv.FormatUint(uint64(ret), 16))
-		log.Error(errdesc)
-		return nil, errors.New(errdesc)
-	}
+	//signed, ret := owcrypt.NAS_signature(PrivateKey, txhash) //对交易体进行签名结果 //65字节
+	//if ret != owcrypt.SUCCESS {
+	//	errdesc := fmt.Sprintln("signature error, ret:", "0x"+strconv.FormatUint(uint64(ret), 16))
+	//	log.Error(errdesc)
+	//	return nil, errors.New(errdesc)
+	//}
 	//log.Std.Info("sigx=%x\n",sig)
 	//调用ow库签名交易结果	End
 
-	return signed, nil
+	signature, v, sigErr := owcrypt.Signature(PrivateKey, nil, txhash, owcrypt.ECC_CURVE_SECP256K1)
+	if sigErr != owcrypt.SUCCESS {
+		return nil, fmt.Errorf("transaction hash sign failed")
+	}
+	signature = append(signature, v)
+
+	return signature, nil
 }
 
 //VerifyRawTransaction对签名进行验签
@@ -289,11 +295,13 @@ func VerifyRawTransaction(PubKey []byte, txhash []byte, signed []byte) uint16 {
 
 	//调用ow库进行验证签名
 	//公钥为33字节，需要解压缩出65字节公钥
-	PublicKey := owcrypt.PointDecompress(PubKey, CurveType)
+	//PublicKey := owcrypt.PointDecompress(PubKey, CurveType)
 	//去掉65字节公钥的第一个字节后进行验签
-	verify := owcrypt.Verify(PublicKey[1:65], nil, 0, txhash, 32, signed[0:64], owcrypt.ECC_CURVE_SECP256K1|(1<<9))
+	//verify := owcrypt.Verify(PublicKey[1:65], nil, 0, txhash, 32, signed[0:64], owcrypt.ECC_CURVE_SECP256K1|(1<<9))
 	//log.Std.Info("Verify success! verify=%x\n", verify)
 	//调用ow库进行验证签名 End
+	_, verify := owcrypt.RecoverPubkey(signed, txhash, owcrypt.ECC_CURVE_SECP256K1)
+
 	return verify
 }
 
