@@ -12,7 +12,7 @@ require (
 	github.com/bndr/gotabulate v1.1.2
 	github.com/btcsuite/btcutil v0.0.0-20191219182022-e17c9730c422
 	github.com/ethereum/go-ethereum v1.9.9
-	github.com/gogo/protobuf v1.2.1
+	github.com/gogo/protobuf v1.3.2
 	github.com/grpc-ecosystem/grpc-gateway v1.5.1 // indirect
 	github.com/imroc/req v0.2.4
 	github.com/nebulasio/go-nebulas v1.0.8
